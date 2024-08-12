@@ -1,12 +1,11 @@
 package com.hdbank.integration.controller.rlos.accountController;
 
 
-import com.hdbank.integration.dto.request.BaseRequest;
-import com.hdbank.integration.dto.request.RetrievesAccountRequest;
-import com.hdbank.integration.dto.request.TestRequest;
-import com.hdbank.integration.dto.response.BaseResponse;
-import com.hdbank.integration.dto.response.RetrievesAccountResponse;
-import com.hdbank.integration.service.rlos.RlosAccountQueryService;
+import com.hdbank.integration.dto.server.request.BaseRequest;
+import com.hdbank.integration.dto.server.request.RetrievesAccountRequest;
+import com.hdbank.integration.dto.server.response.BaseResponse;
+import com.hdbank.integration.dto.server.response.RetrievesAccountResponse;
+import com.hdbank.integration.service.restServer.RlosAccountQueryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +19,11 @@ public class GetAccountController {
 
     private final RlosAccountQueryService rlosAccountQueryService;
 
-    @PostMapping
-    public Mono<BaseResponse<RetrievesAccountResponse>> retrievesAccount(@RequestBody BaseRequest<RetrievesAccountRequest> request) {
-        System.out.println(rlosAccountQueryService.retrievesAccount(request));
-        return rlosAccountQueryService.retrievesAccount(request);
+    @GetMapping("/{clientNo}")
+    public Mono<BaseResponse<RetrievesAccountResponse>> retrievesAccount(@PathVariable("clientNo") String clientNo) {
+       RetrievesAccountRequest retrievesAccountRequest = new RetrievesAccountRequest(clientNo);
+       return rlosAccountQueryService.retrievesAccount(retrievesAccountRequest);
     }
 
-    @PostMapping("/test")
-    public String test(@RequestBody BaseRequest<TestRequest> request) {
-        return "test";
-    }
-    @GetMapping("/test1")
-    public String test1() {
-        return "test1";
-    }
 
 }
